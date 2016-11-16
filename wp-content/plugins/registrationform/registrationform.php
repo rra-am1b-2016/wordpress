@@ -41,6 +41,17 @@
                                                    0,
                                                    $_POST['login'])
          );
+
+         $id = $wpdb->insert_id;
+         $userdata = array(
+               'ID' => $id,
+               'user_login' => $_POST['login'],
+               'role' => 'subscriber'
+         );
+
+         wp_insert_user($userdata);
+
+
       }
       else
       {
