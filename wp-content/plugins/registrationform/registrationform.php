@@ -1,4 +1,4 @@
-<?php
+<?php 
     /*
       Plugin Name: Registratie Formulier
       Version: 1.0 
@@ -6,21 +6,22 @@
       Author URI: https://arjanderuijter.nl 
       Description: Dit is een registratieformulier 
    */
-
+   ob_start();
+   
    function show_form()
    {
       global $wpdb;
 
       if (isset($_POST["submit"]))
       {
-         echo "Er is op de knop gedrukt";
-         var_dump($_POST);
+         //echo "Er is op de knop gedrukt";
+         //var_dump($_POST);
          //var_dump($_SERVER);
+         
          $wpdb->query(
             $wpdb->prepare("INSERT INTO `wp_users` (`ID`,
                                                     `user_login`,
                                                     `user_pass`,
-                                                    `user_nicename`,
                                                     `user_email`,
                                                     `user_registered`,
                                                     `user_status`,
@@ -31,11 +32,9 @@
                                                    '%s',
                                                    '%s',
                                                    '%s',
-                                                   '%s',
                                                    '%s')",
                                                    $_POST['login'],
                                                    MD5('geheim'),
-                                                   $_POST['login'],
                                                    $_POST['email'],
                                                    date('Y-m-d H:i:s'),
                                                    0,
@@ -43,14 +42,20 @@
          );
 
          $id = $wpdb->insert_id;
+         
          $userdata = array(
                'ID' => $id,
                'user_login' => $_POST['login'],
-               'role' => 'subscriber'
+               'role' => 'subscriber',
+               'user_nicename' => $_POST['login']
          );
 
-         wp_insert_user($userdata);
-
+         $user_id = wp_insert_user($userdata);
+         if ( ! is_wp_error( $user_id ) )
+         {            
+            echo "U bent geregistreerd. Uw ID: ". $user_id;
+            header("Refresh: 2; url=http://localhost/2016-2017/am1b/groenten/");
+         }
 
       }
       else
