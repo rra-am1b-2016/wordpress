@@ -14,28 +14,45 @@ function activate()
        // Vraag de gegevens op van de user uit de database
        $user_info = get_userdata( $_POST["id"] );
 
-       //var_dump($user_info); 
-                      
-       if (strcmp($_POST["password"], $_POST["verification_password"]) == 0)
-       {
-            // dan updaten we het password veld naar de nieuwe waarde en zetten we activate op true.
-            $user_id = wp_set_password( $_POST["password"], $_POST["id"] );
+       /*
+       var_dump($user_info);
+       echo  "Post password: ".$_POST["password"]."<br>";
+       echo "Password hash door functie: ".wp_hash_password($_POST["password"])."<br>";
+       echo "post hidden pw: ".$_POST["pw"]."<br>";
+       echo "user_info->data->user_pass: ".$user_info->data->user_pass."<br>";
+       
+       //exit();
+       */
 
-            //var_dump($user_id); exit();
-            if ( ! is_wp_error( $user_id ) )
-            { 
-                  echo "Uw account is geactiveerd en uw password gewijzigd.";
-                  header("refresh: 4; url=http://localhost/2016-2017/am1b/groenten/");
-            }                  
-            
-        }
-        else
-        {
-            echo "De twee ingevoerde wachtwoorden komen niet overeen. Probeer het nog een keer.<br>";
-            echo "U wordt doorgestuurd naar de betreffende pagina";
-            header("refresh: 4; url=http://localhost/2016-2017/am1b/groenten/index.php/activatie/?content=activate&id=".$_POST["id"]."&pw=".MD5("geheim")."'");
-        }
-     }
+
+       if (strcmp($_POST["pw"], $user_info->data->user_pass) == 0) 
+       {     
+            if (strcmp($_POST["password"], $_POST["verification_password"]) == 0)
+            {
+                  // dan updaten we het password veld naar de nieuwe waarde en zetten we activate op true.
+                  $user_id = wp_set_password( $_POST["password"], $_POST["id"] );
+
+                  //var_dump($user_id); exit();
+                  if ( ! is_wp_error( $user_id ) )
+                  { 
+                        echo "Uw account is geactiveerd en uw password gewijzigd.";
+                        header("refresh: 4; url=http://localhost/2016-2017/am1b/groenten/");
+                  } 
+            }
+            else
+            {
+                  echo "De twee ingevoerde wachtwoorden komen niet overeen. Probeer het nog een keer.<br>";
+                  echo "U wordt doorgestuurd naar de betreffende pagina";
+                  header("refresh: 4; url=http://localhost/2016-2017/am1b/groenten/index.php/activatie/?content=activate&id=".$_POST["id"]."&pw=".MD5("geheim")."'");
+            }
+       }
+       else
+       {
+            echo "U heeft geen rechten op deze pagina<br>";
+            echo "U wordt doorgestuurd";
+            header("refresh: 4; url=http://localhost/2016-2017/am1b/groenten/");
+       }
+   }
    else
    {
 ?>
