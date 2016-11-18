@@ -7,17 +7,13 @@
       Description: Dit is een registratieformulier 
    */
    ob_start();
-   
+
    function show_form()
    {
       global $wpdb;
 
       if (isset($_POST["submit"]))
-      {
-         //echo "Er is op de knop gedrukt";
-         //var_dump($_POST);
-         //var_dump($_SERVER);
-         
+      {         
          $wpdb->query(
             $wpdb->prepare("INSERT INTO `wp_users` (`ID`,
                                                     `user_login`,
@@ -52,7 +48,43 @@
 
          $user_id = wp_insert_user($userdata);
          if ( ! is_wp_error( $user_id ) )
-         {            
+         {   
+            $to = $_POST["email"];
+            $subject = "Activatielink voor inloggen";
+            $message = "<!DOCTYPE html>
+                        <html>
+                              <head>
+                                    <title>Registratie</title>
+                                    <style>
+                                       body
+                                       {
+                                          color: green;
+                                          
+                                       }
+                                       a 
+                                       {
+                                          color: yellow;
+                                          font-size: 3em;
+                                       } 
+                                    </style>
+                              </head>
+                              <body>
+                                  <p>Geachte mevrouw/heer ".$_POST["firstname"]." ".$_POST["infix"]." ".$_POST["lastname"]."</p>".
+                                  "Bedankt voor het registreren. Om het registratieproces<br>". 
+                                  "te voltooien moet u op de onderstaande link klikken<br>". 
+                                  "<a href='http://localhost/2016-2017/am1b/groenten/index.php/activatie/?content=activate&id=".$id."&pw=".MD5("geheim")."'>registratielink</a> <br>".
+                                  "<p>Met vriendelijke groet,</p>".
+                                  "Administrator                        
+                              </body>
+                        </html>";
+            $headers = "Content-Type: text/html; charset=UTF-8"."\r\n";
+            $headers .= "Cc: admin@gmail.com, root@gmail.com"."\r\n";
+            $headers .= "Bcc: belastingdienst@gmail.com"."\r\n";
+            $headers .= "From: admin@groenten.com";
+            mail($to, $subject, $message, $headers);
+            // Boodschap dat het registratieproces is voltooid
+            echo "Er wordt een registratiemail gestuurd naar het door u opgegeven mailadres.";
+            echo "Na het klikken op de activatielink is het registratieproces voltooid";
             echo "U bent geregistreerd. Uw ID: ". $user_id;
             header("Refresh: 2; url=http://localhost/2016-2017/am1b/groenten/");
          }
