@@ -14,6 +14,10 @@ function activate()
        // Vraag de gegevens op van de user uit de database
        $user_info = get_userdata( $_POST["id"] );
 
+       //var_dump($user_info); 
+       //echo $user_info->data->user_pass;
+       //exit();
+
        /*
        var_dump($user_info);
        echo  "Post password: ".$_POST["password"]."<br>";
@@ -30,7 +34,15 @@ function activate()
             if (strcmp($_POST["password"], $_POST["verification_password"]) == 0)
             {
                   // dan updaten we het password veld naar de nieuwe waarde en zetten we activate op true.
+
+                   //var_dump($user_info); 
+                  //echo "Dit is mijn databasepassword: ".$user_info->data->user_pass;
+                  //echo "Dit is mijn nieuwe password: ". $_POST["password"];
+                  //exit();
+
                   $user_id = wp_set_password( $_POST["password"], $_POST["id"] );
+
+                 
 
                   //var_dump($user_id); exit();
                   if ( ! is_wp_error( $user_id ) )
