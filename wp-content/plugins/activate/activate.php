@@ -55,7 +55,7 @@ function activate()
             {
                   echo "De twee ingevoerde wachtwoorden komen niet overeen. Probeer het nog een keer.<br>";
                   echo "U wordt doorgestuurd naar de betreffende pagina";
-                  header("refresh: 4; url=http://localhost/2016-2017/am1b/groenten/index.php/activatie/?content=activate&id=".$_POST["id"]."&pw=".$_POST['pw']."'");
+                  header("refresh: 4; url=http://localhost/2016-2017/am1b/groenten/index.php/activatie/?content=activate&id=".$_POST["id"]."&pw=".$_POST['pw']);
             }
        }
        else
