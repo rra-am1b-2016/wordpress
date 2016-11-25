@@ -55,7 +55,7 @@ function activate()
             {
                   echo "De twee ingevoerde wachtwoorden komen niet overeen. Probeer het nog een keer.<br>";
                   echo "U wordt doorgestuurd naar de betreffende pagina";
-                  header("refresh: 4; url=http://localhost/2016-2017/am1b/groenten/index.php/activatie/?content=activate&id=".$_POST["id"]."&pw=".MD5("geheim")."'");
+                  header("refresh: 4; url=http://localhost/2016-2017/am1b/groenten/index.php/activatie/?content=activate&id=".$_POST["id"]."&pw=".$_POST['pw']."'");
             }
        }
        else
@@ -83,8 +83,8 @@ function activate()
          <td></td>
          <td><input type="submit" name="submit" value="wijzig!"></td>
       </tr>
-      <input type="hidden" name="id" value="<?php echo $_GET["id"]; ?>">
-      <input type="hidden" name="pw" value="<?php echo $_GET["pw"]; ?>">
+      <input type="hidden" name="id" value="<?php echo $_GET['id']; ?>">
+      <input type="hidden" name="pw" value="<?php echo $_GET['pw']; ?>">
    </table>
 </form>
 <?php
